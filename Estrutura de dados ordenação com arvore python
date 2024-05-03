@@ -1,0 +1,42 @@
+class No:
+    def __init__(self, chave):
+        self.esquerda = None
+        self.direita = None
+        self.valor = chave
+
+def nova_arvore():
+    return None
+
+def adicionar(raiz, chave):
+    if raiz is None:
+        return No(chave)
+    else:
+        if chave < raiz.valor:
+            raiz.esquerda = adicionar(raiz.esquerda, chave)
+        else:
+            raiz.direita = adicionar(raiz.direita, chave)
+    return raiz
+
+def limpar_arvore(raiz):
+    if raiz:
+        limpar_arvore(raiz.esquerda)
+        limpar_arvore(raiz.direita)
+        raiz = None
+
+def imprimir_decrescente(raiz):
+    if raiz:
+        imprimir_decrescente(raiz.direita)
+        print(raiz.valor, end=" ")
+        imprimir_decrescente(raiz.esquerda)
+
+# Leitura da entrada
+n = int(input())
+valores = input().split()
+
+# Construindo a árvore
+raiz = nova_arvore()
+for valor in valores:
+    raiz = adicionar(raiz, int(valor))
+
+# Imprimindo os números em ordem decrescente
+imprimir_decrescente(raiz)
