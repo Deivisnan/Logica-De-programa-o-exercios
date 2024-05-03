@@ -1,0 +1,39 @@
+contador=1
+from random import randint
+from time import sleep
+numero = randint(0,10)
+print('-=*'*10,'\033[34mJOGO Da ADIVINHAÇÃO\033[m','-=*'*10)
+n1=int(input('tente adivinhar no numero que vou pensar, escolha um numero de 1 a 10!!\n'))#jogador
+if n1>numero:
+    print('dica \033[35m[menos]\033[m tente mais uma vez')
+else:
+    print('dica \033[35m[mais]\033[m tente mais uma vez')
+while numero!= n1:
+    contador=contador+1
+    n1=int(input(' Qual seu palpite!'))
+    print('-=*' * 20)
+    if n1<numero:
+        print('dica \033[35m[mais]\033[m tente mais uma vez')
+    else:
+        print('dica \033[35m[menos]\033[m tente mais uma vez')
+if n1 == numero:
+    print('\033[33m parabéns voce acertou \033[m')
+    if contador<=4 and contador>1:
+        print('voce foi bem precisou  de {} tentativas 😃'.format(contador))
+    if contador==1:
+        print('voce foi ótimo 😆😆😆 precisou  de {} tentativa apenas'.format(contador))
+    if contador>=5:
+        print('Mas voce foi mal, precisou de {} tentativas😔'.format(contador))
+#como professsor fez
+'''tentativas=0
+from random import randint
+computador= randint(0,10)
+print('olá eu sou o computador vou escolher um numero de 0 a 10 e voce vai tentar adivinhar')
+acertou= False
+while not acertou:
+    tentativas+=1
+    jogador= int(input("qual seu palpite?"))
+    if jogador==computador:
+        acertou=True
+print('aacertoou!!!')
+print(tentativas)'''
