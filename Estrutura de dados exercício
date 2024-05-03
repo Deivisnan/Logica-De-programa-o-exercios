@@ -1,0 +1,79 @@
+class Node:
+    def __init__(self, symbol, letter):
+        self.symbol = symbol
+        self.letter = letter
+        self.next = None
+        self.prev = None
+
+class CircularDoublyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def append(self, symbol, letter):
+        new_node = Node(symbol, letter)
+        if not self.head:
+            self.head = new_node
+            self.tail = new_node
+            new_node.next = new_node
+            new_node.prev = new_node
+        else:
+            new_node.next = self.head
+            new_node.prev = self.tail
+            self.head.prev = new_node
+            self.tail.next = new_node
+            self.tail = new_node
+
+    def free_list(self):
+        self.head = None
+        self.tail = None
+
+def move_forward(node, positions):
+    for _ in range(positions):
+        node = node.next
+    return node
+
+def move_backward(node, positions):
+    for _ in range(positions):
+        node = node.prev
+    return node
+
+def encrypt_decrypt(circular_list, message, key):
+    result = ""
+    for char in message:
+        current_node = circular_list.head
+        while current_node.symbol != char:
+            current_node = current_node.next
+        current_node = move_backward(current_node, key)  # Move a chave de posições para trás
+        result += current_node.letter
+    return result
+
+def cipher_substitution(circular_list, message, key):
+    result = ""
+    for char in message:
+        current_node = circular_list.head
+        while current_node.letter != char:
+            current_node = current_node.next
+        current_node = move_forward(current_node, key)  # Move a chave de posições para a frente
+        result += current_node.symbol
+    return result
+
+def main():
+    circular_list = CircularDoublyLinkedList()
+    
+    for _ in range(26):
+        symbol, letter = input().split()
+        circular_list.append(symbol, letter)
+
+    key = int(input())
+    encrypted_message = input()
+    roman_message = input()
+
+    decrypted_message = encrypt_decrypt(circular_list, encrypted_message, key)
+    substituted_message = cipher_substitution(circular_list, roman_message, key)
+
+    print(decrypted_message)  # Mensagem decifrada no alfabeto romano
+    print(substituted_message)  # Mensagem cifrada no alfabeto de substituição
+
+if __name__ == "__main__":
+    main()
