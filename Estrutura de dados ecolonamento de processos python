@@ -1,0 +1,61 @@
+class Processo:
+    def __init__(self, nome, tempo_execucao):
+        self.nome = nome
+        self.tempo_execucao = tempo_execucao
+
+class Fila:
+    def __init__(self):
+        self.processos = []
+
+    def enfileirar(self, processo):
+        self.processos.append(processo)
+
+    def desenfileirar(self):
+        if self.processos:
+            return self.processos.pop(0)
+
+    def imprimir(self):
+        for processo in self.processos:
+            print(f"{processo.nome} {processo.tempo_execucao}")
+
+def simulador_escalonamento(tempo_processo, tempo_gravacao, lista_processo):
+    alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    lista_alfabeto = list(alfabeto)
+
+    fila = Fila()
+    tempo_total = 0
+
+    for i in range(len(lista_processo)):
+        processo = Processo(lista_alfabeto[i], int(lista_processo[i]))
+        fila.enfileirar(processo)
+
+    while fila.processos:
+        processo_atual = fila.desenfileirar()
+
+        if processo_atual.tempo_execucao > tempo_processo:
+            processo_atual.tempo_execucao -= tempo_processo
+            tempo_total += tempo_processo + tempo_gravacao
+            fila.enfileirar(processo_atual)
+
+        elif processo_atual.tempo_execucao == tempo_processo:
+            tempo_total += tempo_processo
+            print(f"{processo_atual.nome} {tempo_total}")
+
+        elif processo_atual.tempo_execucao < tempo_processo:
+            tempo_total += processo_atual.tempo_execucao
+            print(f"{processo_atual.nome} {tempo_total}")
+
+def main():
+    tempo_processo_e_tempo_gravacao = input()
+    processos = input()
+
+    tempo_processo_e_tempo_gravacao = tempo_processo_e_tempo_gravacao.split()
+    tempo_processo = int(tempo_processo_e_tempo_gravacao[0])
+    tempo_gravacao = int(tempo_processo_e_tempo_gravacao[1])
+
+    lista_processo = processos.split()
+
+    simulador_escalonamento(tempo_processo, tempo_gravacao, lista_processo)
+
+if __name__ == "__main__":
+    main()
