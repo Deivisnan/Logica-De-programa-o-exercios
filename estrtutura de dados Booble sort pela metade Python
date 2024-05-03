@@ -1,0 +1,53 @@
+import numpy as np
+import math
+
+def mudar_posi(lista, i, j):
+    temp = lista[i]
+    lista[i] = lista[j]
+    lista[j] = temp
+
+def voltar_posi(lista, n):
+    for i in range(n - 1, 0, -1):
+        if lista[i] < lista[i - 1]:
+            mudar_posi(lista, i, i - 1)
+
+def bubble_sort_pela_metade(lista):
+    if len(lista) < 2:
+        return  # Lista já ordenada ou vazia, nenhum movimento necessário
+
+    n = len(lista)
+    metade = math.ceil(n / 2)  # Arredonda para cima usando math.ceil
+    movimentacoes_totais = 0
+
+    for it in range(metade):
+        movimentacoes = 0
+        for i in range(n - 1, 0, -1):
+            if lista[i] < lista[i - 1]:
+                mudar_posi(lista, i, i - 1)
+                movimentacoes += 1
+
+        movimentacoes_totais += movimentacoes
+        print(movimentacoes)
+
+    print(" ".join(map(str, lista)))
+
+if __name__ == "__main__":
+    try:
+        n = int(input())
+        lista = list(map(int, input().split()))
+    except ValueError:
+        print("Erro: A entrada deve ser um número seguido por uma lista de inteiros.")
+        exit(0)
+
+    # Converte a lista para o array do Numpy
+    lista_np = np.array(lista)
+
+    # Executa o Bubble Sort pela Metade
+    try:
+        bubble_sort_pela_metade(lista_np)
+    except Exception as e:
+        print(f"Erro durante a execução: {e}")
+        exit(0)
+
+    # Garanta que o programa sempre retorne 0 no final
+    exit(0)
