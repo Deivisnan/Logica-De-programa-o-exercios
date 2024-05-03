@@ -1,0 +1,61 @@
+class Node:
+    def __init__(self, nome, idade):
+        self.nome = nome
+        self.idade = idade
+        self.prox_nome = None  
+        self.prox_idade = None  
+class Multilista:
+    def __init__(self):
+        self.head_nome = None  
+        self.head_idade = None  
+
+    def inserir(self, nome, idade):
+        novo_no = Node(nome, idade)
+
+      
+        if self.head_nome is None or nome < self.head_nome.nome:
+            novo_no.prox_nome = self.head_nome
+            self.head_nome = novo_no
+        else:
+            current = self.head_nome
+            while current.prox_nome is not None and current.prox_nome.nome < nome:
+                current = current.prox_nome
+            novo_no.prox_nome = current.prox_nome
+            current.prox_nome = novo_no
+
+        if self.head_idade is None or idade < self.head_idade.idade:
+            novo_no.prox_idade = self.head_idade
+            self.head_idade = novo_no
+        else:
+            current = self.head_idade
+            while current.prox_idade is not None and current.prox_idade.idade < idade:
+                current = current.prox_idade
+            novo_no.prox_idade = current.prox_idade
+            current.prox_idade = novo_no
+
+    def imprimir(self):
+        current_nome = self.head_nome
+        current_idade = self.head_idade
+
+        while current_nome is not None and current_idade is not None:
+            print(f"{current_nome.nome} {current_nome.idade} | {current_idade.nome} {current_idade.idade}")
+            current_nome = current_nome.prox_nome
+            current_idade = current_idade.prox_idade
+
+        while current_nome is not None:
+            print(f"{current_nome.nome} {current_nome.idade} |")
+            current_nome = current_nome.prox_nome
+
+        while current_idade is not None:
+            print(f"| {current_idade.nome} {current_idade.idade}")
+            current_idade = current_idade.prox_idade
+
+n = int(input())
+multilista = Multilista()
+
+for _ in range(n):
+    operacao = input().split()
+    nome, idade = operacao[0], int(operacao[1])
+    multilista.inserir(nome, idade)
+
+multilista.imprimir()
