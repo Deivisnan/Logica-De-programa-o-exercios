@@ -1,0 +1,45 @@
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        else:
+            raise IndexError("pop from an empty stack")
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+def evaluate_rpn(expression):
+    stack = Stack()
+    operators = {'+': lambda x, y: x + y,
+                 '-': lambda x, y: x - y,
+                 '*': lambda x, y: x * y,
+                 '/': lambda x, y: x // y}  # Use // for integer division in Python 3
+
+    tokens = expression.split()
+
+    for token in tokens:
+        if token.isdigit() or (token[0] == '-' and token[1:].isdigit()):
+            # If the token is a number, push it onto the stack
+            stack.push(int(token))
+        elif token in operators:
+            # If the token is an operator, pop two operands from the stack, perform the operation, and push the result
+            operand2 = stack.pop()
+            operand1 = stack.pop()
+            result = operators[token](operand1, operand2)
+            stack.push(result)
+        else:
+            raise ValueError("Invalid token: {}".format(token))
+
+    # The final result should be on the top of the stack
+    return stack.pop()
+
+# Exemplo de uso com input do usuário
+expressao = input()
+resultado = evaluate_rpn(expressao)
+print(resultado)
