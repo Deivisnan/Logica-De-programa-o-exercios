@@ -1,0 +1,36 @@
+import numpy as np
+
+n = int(input())  # Read the size of the list
+array = list(map(int, input().split()))  # Read the elements of the list
+
+cont_impar = -1
+cont_par = -1
+
+for i in range(1, n):
+    if i % 2 != 0:
+        # Odd iteration: find the smallest element and place it in the correct position
+        cont_impar += 1
+        primeira_pos = i - (cont_impar + 1)
+        menor = array[primeira_pos]
+        menor_posicao = primeira_pos
+        for j in range(cont_impar, len(array)):
+            if array[j] < menor:
+                menor = array[j]
+                menor_posicao = j
+        array[primeira_pos], array[menor_posicao] = array[menor_posicao], array[primeira_pos]
+    else:
+        # Even iteration: find the largest element and place it in the correct position
+        cont_par += 1
+        ultima_pos = n - (i - (cont_par + 1))
+        maior = array[ultima_pos]
+        maior_posicao = ultima_pos
+        for j in range((len(array) - cont_par)):
+            if array[j] > maior:
+                maior = array[j]
+                maior_posicao = j
+        array[ultima_pos], array[maior_posicao] = array[maior_posicao], array[ultima_pos]
+
+    # Print the current state of the array after each iteration
+    for j in range(len(array)):
+        print(f"{array[j]} ", end='')
+    print()
