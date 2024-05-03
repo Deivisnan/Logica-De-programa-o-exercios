@@ -1,0 +1,72 @@
+#include <iostream>
+#include <cctype>
+#include <string>
+#include <sstream>
+#include <limits>
+using namespace std;
+
+// atividade mata045 cifra de césar
+// versão corrigida, para entrada de uma frase, foi adcionada a função getline.
+string cifrarPalavra(const string& palavra, int chave) {
+    string cifrada = palavra;
+
+    for (char& c : cifrada) {
+        if (isalpha(c)) {
+            if (islower(c)) {
+                c = 'a' + (c - 'a' + chave + 26) % 26;
+            }
+            else if (isupper(c)) {
+                c = 'A' + (c - 'A' + chave + 26) % 26;
+            }
+        }
+    }
+
+    return cifrada;
+}
+
+int main() {
+    string chaveStr;
+    int chave;
+    string palavra;
+
+    cout << "Digite a chave (um número inteiro sem espaços): ";
+    cin >> chaveStr;
+
+    // Verificar se a chave contém apenas números inteiros e não contém espaços
+    for (char c : chaveStr) {
+        if (!isdigit(c) || isspace(c)) {
+            cerr << "Erro: A chave deve conter apenas números inteiros e não deve conter espaços." << endl;
+            return 1;
+        }
+    }
+
+    // Converter a chave para um inteiro
+    stringstream ss(chaveStr);
+    ss >> chave;
+
+    if (ss.fail()) {
+        cerr << "Erro: A chave não é um número inteiro válido." << endl;
+        return 1;
+    }
+
+    chave = chave % 26;
+
+    // Limpar o buffer de entrada
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    cout << "Digite a palavra a ser cifrada: ";
+    getline(cin, palavra);
+
+    if (palavra.empty() || !isalpha(palavra[0])) {
+        cerr << "Erro: A palavra deve conter apenas letras." << endl;
+        return 1;
+    }
+
+    // Cifrar a palavra
+    string palavraCifrada = cifrarPalavra(palavra, chave);
+
+    cout << "Palavra cifrada: " << palavraCifrada << endl;
+
+    return 0;
+}
+//Deivisnan Bispo
