@@ -1,0 +1,56 @@
+class No:
+    def __init__(self, valor):
+        self.valor = valor
+        self.proximo = None
+
+class ListaEncadeada:
+    def __init__(self):
+        self.cabeca = None
+
+    def adicionar(self, valor):
+        novo_no = No(valor)
+        if self.cabeca is None:
+            self.cabeca = novo_no
+        else:
+            atual = self.cabeca
+            while atual.proximo:
+                atual = atual.proximo
+            atual.proximo = novo_no
+
+    def encontrar_subsequencia(self, sequencia):
+        atual = self.cabeca
+        indice = 0
+        while atual:
+            if self._verificar_subsequencia(atual, sequencia):
+                return indice
+            atual = atual.proximo
+            indice += 1
+        return -1
+
+    def _verificar_subsequencia(self, no, sequencia):
+        atual = no
+        sequencia_atual = sequencia
+        while atual and sequencia_atual:
+            if atual.valor != sequencia_atual[0]:
+                return False
+            atual = atual.proximo
+            sequencia_atual = sequencia_atual[1:]
+        return not sequencia_atual
+
+def detectar_plagio(sequencia1, sequencia2):
+    lista1 = ListaEncadeada()
+    lista2 = ListaEncadeada()
+    for char in sequencia1:
+        lista1.adicionar(char)
+    for char in sequencia2:
+        lista2.adicionar(char)
+    posicao = lista2.encontrar_subsequencia(sequencia1)
+    if posicao != -1:
+        print(f"Plagio encontrado na posicao {posicao}!")
+    else:
+        print("Nenhum plagio detectado!")
+
+sequencia1 = input( )
+sequencia2 = input()
+
+detectar_plagio(sequencia1, sequencia2)
