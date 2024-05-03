@@ -1,0 +1,73 @@
+class Node:
+    def __init__(self, key):
+        self.left = None
+        self.right = None
+        self.val = key
+
+def new_tree():
+    return None
+
+def add(root, key):
+    if root is None:
+        return Node(key)
+    else:
+        if key < root.val:
+            root.left = add(root.left, key)
+        else:
+            root.right = add(root.right, key)
+    return root
+
+def clear_tree(root):
+    root = None
+    return root
+
+def find_lca(root, x, y, found):
+    if root is None:
+        return None, found
+
+    if root.val == x:
+        found[x] = True
+        return root, found
+
+    if root.val == y:
+        found[y] = True
+        return root, found
+
+    left_lca, found = find_lca(root.left, x, y, found)
+    right_lca, found = find_lca(root.right, x, y, found)
+
+    if left_lca and right_lca:
+        return root, found
+
+    return left_lca if left_lca else right_lca, found
+
+def ancestral_comum_mais_proximo(root, x, y):
+    found = {x: False, y: False}
+    lca, found = find_lca(root, x, y, found)
+
+    if found[x] and found[y]:
+        return lca.val
+    elif found[x]:
+        return x
+    elif found[y]:
+        return y
+    else:
+        return None
+
+# Recebendo a entrada e criando a árvore
+n = int(input())
+values = input().split()
+root = None
+for i in range(n):
+    val = int(values[i])
+    root = add(root, val)
+
+x, y = input().split()
+x = int(x)
+y = int(y)
+
+result = ancestral_comum_mais_proximo(root, x, y)
+if result is None:
+    print("NENHUM")
+else:
+    print(result)
